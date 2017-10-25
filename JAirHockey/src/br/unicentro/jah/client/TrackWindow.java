@@ -16,16 +16,16 @@ public class TrackWindow extends JFrame
 	private static final long serialVersionUID = 1L;
 	
 	// player 1.
-	public static Scalar HSV_LOWER_RED = new Scalar(0, 91, 93);
-	public static Scalar HSV_UPPER_RED = new Scalar(219, 255, 255);
+	public static Scalar HSV_LOWER_RED = new Scalar(153, 88, 0);//new Scalar(0, 81, 99);
+	public static Scalar HSV_UPPER_RED = new Scalar(255, 255, 156);//new Scalar(255, 255, 236);
 	
 	// player 2.
-	public static Scalar HSV_LOWER_BLUE = new Scalar(84, 94, 60);
-	public static Scalar HSV_UPPER_BLUE = new Scalar(255, 255, 171);
+	public static Scalar HSV_LOWER_BLUE = new Scalar(73, 133, 65);
+	public static Scalar HSV_UPPER_BLUE = new Scalar(167, 247, 115);
 		
 	// ball.
-	public static Scalar HSV_LOWER_GREEN = new Scalar(36, 67, 0);//new Scalar(34, 143, 35);
-	public static Scalar HSV_UPPER_GREEN = new Scalar(80, 255, 255);//new Scalar(73, 255, 91);
+	public static Scalar HSV_LOWER_GREEN = new Scalar(138, 0, 200);//new Scalar(34, 143, 35);
+	public static Scalar HSV_UPPER_GREEN = new Scalar(159, 50, 255);//new Scalar(73, 255, 91);
 	
 	// table.
 	public static Scalar HSV_LOWER_TABLE = new Scalar(0, 24, 76);

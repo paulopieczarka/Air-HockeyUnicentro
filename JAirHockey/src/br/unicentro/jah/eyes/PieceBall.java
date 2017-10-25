@@ -8,7 +8,7 @@ public class PieceBall extends Piece
 {
 	public PieceBall() 
 	{
-		super("Ball", TrackWindow.HSV_LOWER_GREEN, TrackWindow.HSV_UPPER_GREEN);
+		super("Ball", TrackWindow.HSV_LOWER_RED, TrackWindow.HSV_UPPER_RED);
 	}
 
 	@Override

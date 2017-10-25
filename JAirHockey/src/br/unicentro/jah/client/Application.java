@@ -12,23 +12,33 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import org.sintef.jarduino.comm.Serial4JArduino;
+
 import br.unicentro.jah.eyes.OpenCamera;
-import br.unicentro.jah.eyes.ViewCanvas;
+import br.unicentro.jah.eyes.ViewCamera;
+import uno.MotorController;
 
 public class Application extends JFrame implements WindowListener
 {
 	private static final long serialVersionUID = 1L;
 	
 	private OpenCamera camera;
-	private ViewCanvas canvas;
+	private ViewCamera canvas;
+	public static MotorController arduino;
 	
 	/* Create App window. */
 	public Application() 
 	{
 		super("JAir-Hockey");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(new Dimension(640, 800));
+		setSize(new Dimension(1080, 600));
 		setLocationRelativeTo(null);
+		
+		String serialPort;
+		serialPort = Serial4JArduino.selectSerialPort();
+    
+        arduino = new MotorController(serialPort);
+        arduino.runArduinoProcess();
 		
 		JFrame frame = this;
 
@@ -53,9 +63,24 @@ public class Application extends JFrame implements WindowListener
 		mTrack.add(miTrackPlayer2);
 		mTrack.add(miTrackBall);
 		
+		JMenuItem miMotor = new JMenuItem("Manual Motor");
+		miMotor.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) 
+			{
+				
+			}
+		});
+		
+		JCheckBoxMenuItem miFollow = new JCheckBoxMenuItem("Follow disk", true);
+		
+		JMenu mArduino = new JMenu("Arduino");
+		mArduino.add(miMotor);
+		mArduino.add(miFollow);
+		
 		JMenuBar menubar = new JMenuBar();
 		menubar.add(mView);
 		menubar.add(mTrack);
+		menubar.add(mArduino);
 		
 		setJMenuBar(menubar);
 		
@@ -78,7 +103,7 @@ public class Application extends JFrame implements WindowListener
 		camera = new OpenCamera();
 		camera.start();
 		
-		canvas = new ViewCanvas(camera);
+		canvas = new ViewCamera(camera);
 		setContentPane(canvas);
 	}
 	

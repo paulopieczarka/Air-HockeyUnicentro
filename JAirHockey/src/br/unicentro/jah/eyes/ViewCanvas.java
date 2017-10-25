@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
@@ -25,7 +24,7 @@ public class ViewCanvas extends JPanel implements Runnable
 	private OpenCamera camera;
 	private Mat image[] = new Mat[3];
 	
-	public static final double RESOLUTION_FACTOR = 2;
+	public static final double RESOLUTION_FACTOR = 1;
 	
 	public static PiecePlayer player1 = new PiecePlayer(
 			"Player1", 
@@ -66,27 +65,27 @@ public class ViewCanvas extends JPanel implements Runnable
 			g.fillRect(0, 250, 150, 90);
 			
 			g.setColor(Color.RED);
-			g.drawRect(0, 250+100, image[0].width(), image[0].height()-140);
+			g.drawRect(10, 250+120, image[0].width()-50, image[0].height()-210);
 			
 //			g.setColor(player1.getBorderColor());
 //			g.drawString(player1.toString(), 10, 270);
 //			g.drawOval((int)player1.getX()-8, 250+(int)player1.getY()-8, 16, 16);
 //			g.fillOval((int)player1.getX()-3, 250+(int)player1.getY()-3, 6, 6);
 			
-			g.setColor(player2.getBorderColor());
-			g.drawString(player2.toString(), 10, 290);
-			g.drawOval((int)player2.getX()-8, 250+(int)player2.getY()-8, 16, 16);
-			g.fillOval((int)player2.getX()-3, 250+(int)player2.getY()-3, 6, 6);
+//			g.setColor(player2.getBorderColor());
+//			g.drawString(player2.toString(), 10, 290);
+//			g.drawOval((int)player2.getX()-8, 250+(int)player2.getY()-8, 16, 16);
+//			g.fillOval((int)player2.getX()-3, 250+(int)player2.getY()-3, 6, 6);
 			
 			g.setColor(ball.getBorderColor());
 			g.drawString(ball.toString(), 10, 310);
 			g.drawOval((int)ball.getX()-8, 250+(int)ball.getY()-8, 16, 16);
 			g.fillOval((int)ball.getX()-3, 250+(int)ball.getY()-3, 6, 6);
 			
-			g.setColor(table.getBorderColor());
-			g.drawString(table.toString(), 10, 330);
-			g.drawOval((int)table.getX()-8, 250+(int)table.getY()-8, 16, 16);
-			g.fillOval((int)table.getX()-3, 250+(int)table.getY()-3, 6, 6);
+//			g.setColor(table.getBorderColor());
+//			g.drawString(table.toString(), 10, 330);
+//			g.drawOval((int)table.getX()-8, 250+(int)table.getY()-8, 16, 16);
+//			g.fillOval((int)table.getX()-3, 250+(int)table.getY()-3, 6, 6);
 		}
 		
 		if(image[1] != null && image[1].width() > 0) {
@@ -111,19 +110,29 @@ public class ViewCanvas extends JPanel implements Runnable
 		while(running)
 		{
 			image[0] = camera.read();
-			image[1] = OCVUtil.equalizeIntensity(image[0]);
+			image[1] = image[0];//OCVUtil.equalizeIntensity(image[0]);
+//			
+//			Imgproc.resize(image[1], image[1], new Size(image[0].width()/RESOLUTION_FACTOR, image[0].height()/RESOLUTION_FACTOR));
+			//image[1] = image[1].submat(new Rect(5, 60, image[1].width()-20, image[1].height()-105));
+//			
+//			Imgproc.GaussianBlur(image[1].clone(), image[1], new Size(11, 11), 0);
+//			Imgproc.cvtColor(image[1].clone(), image[1], Imgproc.COLOR_BGR2HSV);
+//			
+//			Core.inRange(image[1].clone(), TrackWindow.lower, TrackWindow.upper, image[2]);
 			
-			Imgproc.resize(image[1], image[1], new Size(image[0].width()/RESOLUTION_FACTOR, image[0].height()/RESOLUTION_FACTOR));
-			image[1] = image[1].submat(new Rect(0, 50, image[1].width(), image[1].height()-70));
+//			Mat temp = new Mat();
+//			Imgproc.pyrMeanShiftFiltering(
+//					image[1], 
+//					temp, 
+//					10.0, 
+//					30.0,
+//					1,
+//					new TermCriteria(TermCriteria.MAX_ITER | TermCriteria.EPS, 50, 0.001)
+//				);
 			
-			Imgproc.GaussianBlur(image[1], image[1], new Size(11, 11), 0);
-			Imgproc.cvtColor(image[1], image[1], Imgproc.COLOR_BGR2HSV);
-			
-			Core.inRange(image[1].clone(), TrackWindow.lower, TrackWindow.upper, image[2]);
-			
-			trackObject(image[1], player1);
-			trackObject(image[1], player2);
-			trackObject(image[1], ball);
+//			trackObject(image[1], player1);
+//			trackObject(image[1], player2);
+//			trackObject(image[1], ball);
 			//trackObject(image[1], table);
 			
 			
@@ -140,7 +149,7 @@ public class ViewCanvas extends JPanel implements Runnable
 		
 		// Find.
 		Mat mask = new Mat();
-		Core.inRange(image[1].clone(), object.getHSVLower(), object.getHSVUpper(), mask);
+		Core.inRange(cameraFeed.clone(), object.getHSVLower(), object.getHSVUpper(), mask);
 		
 		// Morph.
 		Imgproc.erode(mask, mask, erodeKernel);
